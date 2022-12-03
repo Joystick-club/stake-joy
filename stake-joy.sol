@@ -8,10 +8,10 @@ using SafeERC20 for ERC20;
 using SafeMath for uint256;
 
 // Address of the JOY ERC20 token contract
-address private joyTokenAddress;
+address public joyTokenAddress;
 
 // Address of the PTS ERC20 token contract
-address private ptsTokenAddress;
+address public ptsTokenAddress;
 
 // Mapping of staked JOY balances for each user
 mapping(address => uint256) private stakedBalances;
@@ -34,6 +34,9 @@ constructor(address joyToken, address ptsToken, uint256 rewardRatePerSecond) pub
 
 // Function to deposit JOY tokens and start staking
 function deposit(uint256 amount) public {
+    // Ensure that the amount being deposited is greater than zero
+    require(amount > 0, "Invalid amount");
+
     // Ensure that the user has approved the transfer of JOY tokens from their account
     require(ERC20(joyTokenAddress).allowance(msg.sender, address(this)) >= amount, "Transfer of JOY tokens not approved");
 
@@ -50,6 +53,9 @@ function deposit(uint256 amount) public {
 
 // Function to withdraw JOY tokens and stop staking
 function withdraw(uint256 amount) public {
+    // Ensure that the amount being withdrawn is greater than zero
+    require(amount > 0, "Invalid amount");
+
     // Ensure that the user has enough staked JOY tokens
     require(stakedBalances[msg.sender] >= amount, "Insufficient staked JOY balance");
 
